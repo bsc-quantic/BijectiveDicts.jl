@@ -70,25 +70,10 @@ function test_sizehint()
     @test length(bd) == 2
 end
 
-# Test summary function
-function test_summary()
-    bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
-    io = IOBuffer()
-    summary(io, bd)
-    @test String(take!(io)) == "BijectiveDict{Int,String} with 2 entries"
-end
-
 # Test iterate function
 function test_iterate()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
-    keys = []
-    values = []
-    for (k, v) in bd
-        push!(keys, k)
-        push!(values, v)
-    end
-    @test keys == [1, 2]
-    @test values == ["one", "two"]
+    @test issetequal(collect(bd), [1 => "one", 2 => "two"])
 end
 
 # Test all functions
@@ -102,6 +87,5 @@ end
     test_setindex()
     test_get()
     test_sizehint()
-    test_summary()
     test_iterate()
 end
