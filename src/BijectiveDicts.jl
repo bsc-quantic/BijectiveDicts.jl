@@ -25,9 +25,10 @@ end
 BijectiveDict(f::F) where {K,V,F<:AbstractDict{K,V}} = BijectiveDict(f, f')
 
 Base.copy(bd::BijectiveDict) = BijectiveDict(copy(bd.f), copy(bd.f⁻¹))
-function Base.empty(bd::BijectiveDict, index_type=keytype(bd), value_type=valtype(bd))
-    BijectiveDict(empty(bd.f, index_type, value_type), empty(bd.f⁻¹, value_type, index_type))
+function Base.empty(bd::BijectiveDict, ::Type{K}, ::Type{V}) where {K,V}
+    BijectiveDict(empty(bd.f, K, V), empty(bd.f⁻¹, V, K))
 end
+
 
 Base.adjoint(::Type{BijectiveDict{K,V,F,F⁻¹}}) where {K,V,F,F⁻¹} = BijectiveDict{V,K,F⁻¹,F}
 Base.adjoint(bd::BD) where {BD<:BijectiveDict} = BD'(bd.f⁻¹, bd.f)
