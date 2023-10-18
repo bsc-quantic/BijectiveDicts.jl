@@ -66,8 +66,10 @@ end
 # Test sizehint! function
 function test_sizehint()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
-    sizehint!(bd, 10)
+    nslots = length(bd.f.slots)
+    sizehint!(bd, nslots + 1)
     @test length(bd) == 2
+    @test length(bd.f.slots) > nslots
 end
 
 # Test iterate function
