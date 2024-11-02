@@ -10,7 +10,8 @@ struct BijectiveDict{K,V,F<:AbstractDict{K,V},F⁻¹<:AbstractDict{V,K}} <: Abst
     BijectiveDict{K,V,F,F⁻¹}(f::F, f⁻¹::F⁻¹) where {K,V,F<:AbstractDict{K,V},F⁻¹<:AbstractDict{V,K}} = new{K,V,F,F⁻¹}(f, f⁻¹)
 end
 
-BijectiveDict{K,V,F,F⁻¹}(pairs::Pair{K,V}...) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
+BijectiveDict{K,V,F,F⁻¹}(pairs::Pair...) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
+BijectiveDict{K,V,F,F⁻¹}(pairs::Vector{<:Pair}) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
 
 # F, F⁻¹ default to Dict
 BijectiveDict{K,V}(args...; kwargs...) where {K,V} = BijectiveDict{K,V,Dict{K,V},Dict{V,K}}(args...; kwargs...)
