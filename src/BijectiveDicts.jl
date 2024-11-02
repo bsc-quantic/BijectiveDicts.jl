@@ -16,6 +16,8 @@ BijectiveDict{K,V,F,F⁻¹}(pairs::Vector{<:Pair}) where {K,V,F,F⁻¹} = Biject
 # F, F⁻¹ default to Dict
 BijectiveDict{K,V}(args...; kwargs...) where {K,V} = BijectiveDict{K,V,Dict{K,V},Dict{V,K}}(args...; kwargs...)
 
+const BijectiveIdDict{K,V} = BijectiveDict{K,V,IdDict{K,V},IdDict{V,K}}
+
 # NOTE type piracy
 Base.adjoint(D::Type{<:AbstractDict{K,V}}) where {K,V} = D.name.wrapper{V,K}
 function Base.adjoint(d::D) where {D<:AbstractDict}
