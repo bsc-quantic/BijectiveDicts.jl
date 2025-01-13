@@ -25,8 +25,6 @@ function dict_adjoint(d::D) where {D<:AbstractDict}
     dict_adjoint(D)(Iterators.map(reverse, d))
 end
 
-BijectiveDict(f::F) where {K,V,F<:AbstractDict{K,V}} = BijectiveDict(f, dict_adjoint(f))
-
 Base.copy(bd::BijectiveDict) = BijectiveDict(copy(bd.f), copy(bd.f⁻¹))
 function Base.empty(bd::BijectiveDict, ::Type{K}, ::Type{V}) where {K,V}
     BijectiveDict(empty(bd.f, K, V), empty(bd.f⁻¹, V, K))
