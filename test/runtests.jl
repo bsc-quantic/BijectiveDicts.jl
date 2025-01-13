@@ -78,6 +78,35 @@ function test_iterate()
     @test issetequal(collect(bd), [1 => "one", 2 => "two"])
 end
 
+# Test keys function
+function test_keys()
+    bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
+    @test issetequal(keys(bd), [1, 2])
+    @test issetequal(keys(bd'), ["one", "two"])
+end
+
+# Test values function
+function test_values()
+    bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
+    @test issetequal(values(bd), ["one", "two"])
+    @test issetequal(values(bd'), [1, 2])
+end
+
+# Test haskey function
+function test_haskey()
+    bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
+    @test haskey(bd, 1)
+    @test !haskey(bd, 3)
+end
+
+# Test delete! function
+function test_delete!()
+    bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
+    delete!(bd, 1)
+    @test !haskey(bd, 1)
+    @test !haskey(bd', "one")
+end
+
 # Test all functions
 @testset "Unit tests" begin
     test_empty_constructor()
@@ -90,4 +119,8 @@ end
     test_get()
     test_sizehint()
     test_iterate()
+    test_keys()
+    test_values()
+    test_haskey()
+    test_delete!()
 end
