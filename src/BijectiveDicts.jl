@@ -38,6 +38,8 @@ Base.length(bd::BijectiveDict) = length(bd.f)
 Base.summary(io::IO, bd::BijectiveDict{K,V}) where {K,V} = print(io, "BijectiveDict{$K,$V} with $(length(bd)) entries")
 
 Base.haskey(bd::BijectiveDict, key) = haskey(bd.f, key)
+inv_haskey(bd::BijectiveDict, key) = haskey(bd.f⁻¹, key)
+hasvalue(bd::BijectiveDict, value) = inv_haskey(bd, value)
 Base.keys(bd::BijectiveDict) = keys(bd.f)
 Base.values(bd::BijectiveDict) = values(bd.f)
 
