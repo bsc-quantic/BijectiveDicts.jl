@@ -99,6 +99,13 @@ function test_haskey()
     @test !haskey(bd, 3)
 end
 
+# Test hasvalue function
+function test_hasvalue()
+    bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
+    @test hasvalue(bd, "one")
+    @test !hasvalue(bd, "two")
+end
+
 # Test delete! function
 function test_delete!()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")

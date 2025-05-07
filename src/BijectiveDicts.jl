@@ -1,6 +1,6 @@
 module BijectiveDicts
 
-export BijectiveDict, BijectiveIdDict
+export BijectiveDict, BijectiveIdDict, hasvalue
 
 struct BijectiveDict{K,V,F<:AbstractDict{K,V},F⁻¹<:AbstractDict{V,K}} <: AbstractDict{K,V}
     f::F
