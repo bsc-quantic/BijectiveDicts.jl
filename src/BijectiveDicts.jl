@@ -46,6 +46,14 @@ Base.values(bd::BijectiveDict) = values(bd.f)
 Base.getindex(bd::BijectiveDict{K,V}, key::K) where {K,V} = getindex(bd.f, key)
 function Base.setindex!(bd::BijectiveDict{K,V}, value::V, key::K) where {K,V}
     haskey(bd.f⁻¹, value) && throw(ArgumentError("inserting $key => $value would break bijectiveness"))
+
+    # if update of existing key, then remove old value from f⁻¹
+    # TODO test this!!
+    if haskey(bd.f, key)
+        old_value = bd.f[key]
+        delete!(bd.f⁻¹, old_value)
+    end
+
     bd.f[key] = value
     bd.f⁻¹[value] = key
 end
