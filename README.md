@@ -112,12 +112,11 @@ julia> hasvalue(bd, copy(a))
 false
 ```
 
-<details>
-<summary>Codegen comparison of <code>setindex!</code> on regular vs adjoint <code>BijectiveDict</code></summary>
+## Codegen comparison
 
 There is no performance overhead of calling `setindex!` on the regular `BijectiveDict` or on its `adjoint`. Both lead to the same LLVM IR and assembly code.
 
-## `setindex!`
+### `setindex!`
 
 ```julia
 julia> @code_llvm bd[:a]
@@ -133,7 +132,7 @@ top:
 }
 ```
 
-## `setindex!` on `adjoint`
+### `setindex!` on `adjoint`
 
 ```julia
 julia> @code_llvm bd'[1]
