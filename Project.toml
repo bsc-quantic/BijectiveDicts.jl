@@ -1,7 +1,7 @@
 name = "BijectiveDicts"
 uuid = "d089a002-103b-496c-a4e3-58f90cf955b0"
 authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez+git@bsc.es>"]
-version = "0.2.3"
+version = "0.2.4"
 
 [compat]
 julia = "1.6"
