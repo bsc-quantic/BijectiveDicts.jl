@@ -1,6 +1,6 @@
 module BijectiveDicts
 
-export BijectiveDict, BijectiveIdDict, hasvalue
+export BijectiveDict, BijectiveIdDict, hasvalue, inv_dict
 
 struct BijectiveDict{K,V,F<:AbstractDict{K,V},F⁻¹<:AbstractDict{V,K}} <: AbstractDict{K,V}
     f::F
@@ -10,7 +10,7 @@ struct BijectiveDict{K,V,F<:AbstractDict{K,V},F⁻¹<:AbstractDict{V,K}} <: Abst
     BijectiveDict{K,V,F,F⁻¹}(f::F, f⁻¹::F⁻¹) where {K,V,F<:AbstractDict{K,V},F⁻¹<:AbstractDict{V,K}} = new{K,V,F,F⁻¹}(f, f⁻¹)
 end
 
-BijectiveDict(f::F) where {F<:AbstractDict} = BijectiveDict(f, dict_adjoint(f))
+BijectiveDict(f::F) where {F<:AbstractDict} = BijectiveDict(f, dict_type_adjoint(f))
 BijectiveDict{K,V,F,F⁻¹}(pairs::Pair...) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
 BijectiveDict{K,V,F,F⁻¹}(pairs::Vector{<:Pair}) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
 
@@ -19,10 +19,10 @@ BijectiveDict{K,V}(args...; kwargs...) where {K,V} = BijectiveDict{K,V,Dict{K,V}
 
 const BijectiveIdDict{K,V} = BijectiveDict{K,V,IdDict{K,V},IdDict{V,K}}
 
-dict_adjoint(D::Type{<:AbstractDict{K,V}}) where {K,V} = D.name.wrapper{V,K}
-function dict_adjoint(d::D) where {D<:AbstractDict}
+dict_type_adjoint(D::Type{<:AbstractDict{K,V}}) where {K,V} = D.name.wrapper{V,K}
+function dict_type_adjoint(d::D) where {D<:AbstractDict}
     allunique(values(d)) || throw(ArgumentError("dict is not bijective"))
-    dict_adjoint(D)(Iterators.map(reverse, d))
+    dict_type_adjoint(D)(Iterators.map(reverse, d))
 end
 
 Base.copy(bd::BijectiveDict) = BijectiveDict(copy(bd.f), copy(bd.f⁻¹))
@@ -30,8 +30,10 @@ function Base.empty(bd::BijectiveDict, ::Type{K}, ::Type{V}) where {K,V}
     BijectiveDict(empty(bd.f, K, V), empty(bd.f⁻¹, V, K))
 end
 
-Base.adjoint(::Type{BijectiveDict{K,V,F,F⁻¹}}) where {K,V,F,F⁻¹} = BijectiveDict{V,K,F⁻¹,F}
-Base.adjoint(bd::BD) where {BD<:BijectiveDict} = BD'(bd.f⁻¹, bd.f)
+inv_dict(::Type{BijectiveDict{K,V,F,F⁻¹}}) where {K,V,F,F⁻¹} = BijectiveDict{V,K,F⁻¹,F}
+inv_dict(bd::BD) where {BD<:BijectiveDict} = inv_dict(BD)(bd.f⁻¹, bd.f)
+
+Base.inv(bd::BijectiveDict) = inv_dict(bd)
 
 Base.length(bd::BijectiveDict) = length(bd.f)
 

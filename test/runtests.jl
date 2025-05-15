@@ -15,10 +15,10 @@ function test_constructor_with_args()
     @test bd[2] == "two"
 end
 
-# Test adjoint function
-function test_adjoint()
+# Test inv function
+function test_inv()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
-    adj_bd = adjoint(bd)
+    adj_bd = inv(bd)
     @test length(adj_bd) == 2
     @test adj_bd["one"] == 1
     @test adj_bd["two"] == 2
@@ -53,7 +53,7 @@ function test_setindex()
     setindex!(bd, "three", 3)
     @test length(bd) == 3
     @test bd[3] == "three"
-    @test adjoint(bd)["three"] == 3
+    @test inv(bd)["three"] == 3
 end
 
 # Test get function
@@ -82,14 +82,14 @@ end
 function test_keys()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
     @test issetequal(keys(bd), [1, 2])
-    @test issetequal(keys(bd'), ["one", "two"])
+    @test issetequal(keys(inv(bd)), ["one", "two"])
 end
 
 # Test values function
 function test_values()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
     @test issetequal(values(bd), ["one", "two"])
-    @test issetequal(values(bd'), [1, 2])
+    @test issetequal(values(inv(bd)), [1, 2])
 end
 
 # Test haskey function
@@ -111,14 +111,14 @@ function test_delete!()
     bd = BijectiveDict{Int,String}(1 => "one", 2 => "two")
     delete!(bd, 1)
     @test !haskey(bd, 1)
-    @test !haskey(bd', "one")
+    @test !haskey(inv(bd), "one")
 end
 
 # Test all functions
 @testset "Unit tests" begin
     test_empty_constructor()
     test_constructor_with_args()
-    test_adjoint()
+    test_inv()
     test_copy()
     test_empty()
     test_getindex()

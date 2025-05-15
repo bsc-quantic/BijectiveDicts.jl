@@ -66,18 +66,18 @@ BijectiveDict{Symbol,Int64} with 2 entries:
   :b => 2
 ```
 
-In order to get the inverse mapping, you can use `Base.adjoint`. Note that in order to be performant, it returns a view to the same dictionaries without copying. Mutating the adjoint `BijectiveDict` mutates the original one too, and that's the way it's used.
+In order to get the inverse mapping, you can use `inv_dict` or `Base.inv`. Note that in order to be performant, it returns a view to the same dictionaries without copying. Mutating the inverse `BijectiveDict` mutates the original one too, and that's the way it's used.
 
 ```julia
-julia> bd'
+julia> inv(bd)
 BijectiveDict{Int64,Symbol} with 2 entries:
   2 => :b
   1 => :a
 
-julia> bd'[1]
+julia> inv(bd)[1]
 :a
 
-julia> bd'[3] = :c
+julia> inv(bd)[3] = :c
 :c
 
 julia> bd
@@ -114,7 +114,7 @@ false
 
 ## Codegen comparison
 
-There is no performance overhead of calling `setindex!` on the regular `BijectiveDict` or on its `adjoint`. Both lead to the same LLVM IR and assembly code.
+There is no performance overhead of calling `setindex!` on the regular `BijectiveDict` or on its `inv`erse. Both lead to the same LLVM IR and assembly code.
 
 ### `setindex!`
 
@@ -132,10 +132,10 @@ top:
 }
 ```
 
-### `setindex!` on `adjoint`
+### `setindex!` on `inv`erse
 
 ```julia
-julia> @code_llvm bd'[1]
+julia> @code_llvm inv(bd)[1]
 ; Function Signature: getindex(BijectiveDicts.BijectiveDict{Int64, Symbol, Base.Dict{Int64, Symbol}, Base.Dict{Symbol, Int64}}, Int64)
 ;  @ /Users/mofeing/.julia/packages/BijectiveDicts/Lx2EW/src/BijectiveDicts.jl:46 within `getindex`
 define nonnull ptr @julia_getindex_16701(ptr nocapture noundef nonnull readonly align 8 dereferenceable(16) %"bd::BijectiveDict", i64 signext %"key::Int64") #0 {
