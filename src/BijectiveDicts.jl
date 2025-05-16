@@ -15,7 +15,7 @@ BijectiveDict{K,V,F,F⁻¹}(pairs::Pair...) where {K,V,F,F⁻¹} = BijectiveDict
 BijectiveDict{K,V,F,F⁻¹}(pairs::Vector{<:Pair}) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
 
 # small fix for Reactant
-BijectiveDict{K,V,F,F⁻¹}(pairs::Vector) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)), kwargs...)
+BijectiveDict{K,V,F,F⁻¹}(pairs::Vector) where {K,V,F,F⁻¹} = BijectiveDict{K,V,F,F⁻¹}(F(pairs...), F⁻¹(Iterators.map(reverse, pairs)))
 
 # F, F⁻¹ default to Dict
 BijectiveDict{K,V}(args...; kwargs...) where {K,V} = BijectiveDict{K,V,Dict{K,V},Dict{V,K}}(args...; kwargs...)
