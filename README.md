@@ -1,5 +1,8 @@
 # BijectiveDicts.jl
 
+!!! warn
+    All the features in BijectiveDicts.jl have merged into Bijections.jl v0.2. We recommend using it instead.
+
 A tiny Julia package that provides the `BijectiveDict` type: a one-to-one `AbstractDict` between keys and values.
 
 In order to construct a `BijectiveDict`, you must pass the forward and inverse dictionaries:
